@@ -1,0 +1,1 @@
+"""Net power results sensor."""
