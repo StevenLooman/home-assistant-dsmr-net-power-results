@@ -27,7 +27,7 @@ _LOGGER = logging.getLogger(__name__)
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 })
 
-INTERESETING_ENTITY_IDS = (
+INTERESTING_ENTITY_IDS = (
     'sensor.power_consumption_low',
     'sensor.power_consumption_normal',
     'sensor.power_production_low',
@@ -76,8 +76,8 @@ class NettoPowerResultSensor(Entity):
         # get states at start of day
         start_of_day = dt.start_of_local_day()
         start_of_day_utc = dt.as_utc(start_of_day)
-        states_start_of_day = self._get_states(INTERESETING_ENTITY_IDS, start_of_day_utc)
-        if len(states_start_of_day) != len(INTERESETING_ENTITY_IDS):
+        states_start_of_day = self._get_states(INTERESTING_ENTITY_IDS, start_of_day_utc)
+        if len(states_start_of_day) != len(INTERESTING_ENTITY_IDS):
             _LOGGER.debug('%s.update(): do not have all events for start of day', self)
             return
         usage_start_of_day = self._calculate_total(states_start_of_day)
@@ -86,8 +86,8 @@ class NettoPowerResultSensor(Entity):
         # get states at now
         now = dt.now()
         now_utc = dt.as_utc(now)
-        states_now = self._get_states(INTERESETING_ENTITY_IDS, now_utc)
-        if len(states_now) != len(INTERESETING_ENTITY_IDS):
+        states_now = self._get_states(INTERESTING_ENTITY_IDS, now_utc)
+        if len(states_now) != len(INTERESTING_ENTITY_IDS):
             _LOGGER.debug('%s.update(): do not have all events for now', self)
             return
         usage_now = self._calculate_total(states_now)
