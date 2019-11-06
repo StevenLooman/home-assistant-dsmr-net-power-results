@@ -65,7 +65,8 @@ class NettoPowerResultSensor(Entity):
         states = {}
         for entity_id in entity_ids:
             state = history.get_state(self._hass, timestamp, entity_id)
-            states[entity_id] = state
+            if state:
+                states[entity_id] = state
         return states
 
     @Throttle(MIN_TIME_BETWEEN_UPDATES)
