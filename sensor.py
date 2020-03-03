@@ -3,10 +3,10 @@ Support for Daily Netto Power Result Sensor.
 
 Private, never meant to be used online.
 Take first measurement of the day of the DSMR sensors and stores these:
-  - sensor.power_consumption_low
-  - sensor.power_consumption_normal
-  - sensor.power_production_low
-  - sensor.power_production_normal
+  - sensor.energy_consumption_tarif_1
+  - sensor.energy_consumption_tarif_2
+  - sensor.energy_production_tarif_1
+  - sensor.energy_production_tarif_2
 """
 
 from datetime import timedelta
@@ -27,12 +27,17 @@ _LOGGER = logging.getLogger(__name__)
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 })
 
-INTERESTING_ENTITY_IDS = (
-    'sensor.power_consumption_low',
-    'sensor.power_consumption_normal',
-    'sensor.power_production_low',
-    'sensor.power_production_normal',
+CONSUMPTION_ENTITY_IDS = (
+    'sensor.energy_consumption_tarif_1',
+    'sensor.energy_consumption_tarif_2',
 )
+
+PRODUCTION_ENTITY_IDS = (
+    'sensor.energy_production_tarif_1',
+    'sensor.energy_production_tarif_2',
+)
+
+INTERESTING_ENTITY_IDS = CONSUMPTION_ENTITY_IDS + PRODUCTION_ENTITY_IDS
 
 MIN_TIME_BETWEEN_UPDATES = timedelta(seconds=30)
 
@@ -99,10 +104,14 @@ class NettoPowerResultSensor(Entity):
 
     def _calculate_total(self, states):
         """Calculate current """
-        consumption = Decimal(states['sensor.power_consumption_low'].state) + \
-            Decimal(states['sensor.power_consumption_normal'].state)
-        production = Decimal(states['sensor.power_production_low'].state) + \
-            Decimal(states['sensor.power_production_normal'].state)
+        consumption = sum([
+            Decimal(states[sensor_name].state)
+            for sensor_name in CONSUMPTION_ENTITY_IDS
+            if sensor_name in states])
+        production = sum([
+            Decimal(states[sensor_name].state)
+            for sensor_name in PRODUCTION_ENTITY_IDS
+            if sensor_name in states])
         return consumption - production
 
     @property
