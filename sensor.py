@@ -58,6 +58,26 @@ class NettoPowerResultSensor(Entity):
         self._state = STATE_UNKNOWN
 
     @property
+    def unique_id(self):
+        """Get unique ID."""
+        return 'todays_net_power'
+
+    @property
+    def name(self):
+        """Get name."""
+        return 'Todays net power'
+
+    @property
+    def unit_of_measurement(self):
+        """Get unit of measurement."""
+        return ENERGY_KILO_WATT_HOUR
+
+    @property
+    def icon(self):
+        """Icon to use in the frontend, if any."""
+        return 'mdi:flash'
+
+    @property
     def state(self):
         """Return the state of sensor, if available, translate if needed."""
         _LOGGER.debug('%s.state()', self)
@@ -113,21 +133,6 @@ class NettoPowerResultSensor(Entity):
             for sensor_name in PRODUCTION_ENTITY_IDS
             if sensor_name in states])
         return consumption - production
-
-    @property
-    def name(self):
-        """Get name."""
-        return 'Todays net power'
-
-    @property
-    def unit_of_measurement(self):
-        """Get unit of measurement."""
-        return ENERGY_KILO_WATT_HOUR
-
-    @property
-    def icon(self):
-        """Icon to use in the frontend, if any."""
-        return 'mdi:flash'
 
     def __str__(self):
         """To string."""
