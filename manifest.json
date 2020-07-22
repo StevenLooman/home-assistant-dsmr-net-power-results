@@ -2,6 +2,6 @@
   "domain": "net_power_results",
   "name": "Net power results",
   "dependencies": [],
-  "codeowners": [],
+  "codeowners": ["@StevenLooman"],
   "requirements": []
 }
